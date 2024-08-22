@@ -7,6 +7,8 @@ import logging
 import pathlib
 import urllib.parse
 
+import iso4217
+
 
 def get_script_name() -> str:
     return pathlib.PurePath(__file__).stem
@@ -47,10 +49,11 @@ def request(params: dict) -> str:
 
 
 def main() -> None:
-    storename = '000020925'
+    storename = '8128000020925'
     sharedsecret = 'avUmYqSxMimv0tLNMEdezYBIKECZC6jsKqbI3QU4hJk'
 
     now = datetime.datetime.now(datetime.timezone.utc)
+    currency_number = iso4217.Currency('MUR').number
 
     params = {
         'txntype': 'sale',
@@ -61,7 +64,7 @@ def main() -> None:
         'storename': storename,
         'chargetotal': '13.00',
         'checkoutoption': 'combinedpage',
-        'currency': '978',
+        'currency': str(currency_number),
         'paymentMethod': 'M',
     }
 
