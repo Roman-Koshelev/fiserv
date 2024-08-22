@@ -1,5 +1,6 @@
 import base64
 import datetime
+import json
 import hashlib
 import hmac
 import http.client
@@ -69,6 +70,8 @@ def main() -> None:
     }
 
     params['hashExtended'] = calculate_hash(params, sharedsecret)
+
+    logger.debug(f'request - {json.dumps(params)}')
 
     result = request(params)
     logger.info(result)
