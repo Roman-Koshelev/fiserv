@@ -67,6 +67,8 @@ def main() -> None:
         'checkoutoption': 'combinedpage',
         'currency': str(currency_number),
         'paymentMethod': 'M',
+        'responseSuccessURL': 'https://localhost:8643/webshop/response_success.jsp',
+        'responseFailURL': 'https://localhost:8643/webshop/response_failure.jsp',
     }
 
     params['hashExtended'] = calculate_hash(params, sharedsecret)
