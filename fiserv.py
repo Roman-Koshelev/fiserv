@@ -1,9 +1,9 @@
 import base64
 import datetime
-import json
 import hashlib
 import hmac
 import http.client
+import json
 import logging
 import pathlib
 import urllib.parse
@@ -41,10 +41,13 @@ def request(params: dict) -> str:
     response = conn.getresponse()
     response_body = response.read().decode('utf-8')
 
-    logger.debug(f'code = {response.getcode()}')
-    for header_k, header_v in response.getheaders():
-         logger.debug(f'{header_k} = {header_v}')
-    logger.debug(f'body = {response_body}')
+    if logger.isEnabledFor(logging.DEBUG):
+        response_obj = {
+            'code': response.getcode(),
+            'headers': {key: value for key, value in response.getheaders()},
+            'body': response_body,
+        }
+        logger.debug(f'response = {json.dumps(response_obj)}')
 
     return response.getheader('Location')
 
@@ -81,5 +84,5 @@ def main() -> None:
 
 if __name__ == '__main__':
     logformat = '[%(asctime)s] %(levelname)s %(name)s: %(message)s'
-    logging.basicConfig(format=logformat, level=logging.INFO)
+    logging.basicConfig(format=logformat, level=logging.DEBUG)
     main()
