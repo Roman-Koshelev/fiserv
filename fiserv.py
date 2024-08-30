@@ -9,6 +9,7 @@ import pathlib
 import urllib.parse
 
 import iso4217
+import pytz
 
 
 def get_script_name() -> str:
@@ -54,14 +55,15 @@ def request(params: dict) -> str:
 
 def main() -> None:
     storename = '8128000020925'
-    sharedsecret = 'avUmYqSxMimv0tLNMEdezYBIKECZC6jsKqbI3QU4hJk'
+    sharedsecret = 'dg;7m%D6iq'
+    timezone = 'Europe/Berlin'
 
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(pytz.timezone(timezone))
     currency_number = iso4217.Currency('MUR').number
 
     params = {
         'txntype': 'sale',
-        'timezone': 'Europe/Berlin',
+        'timezone': timezone,
         'txndatetime': f'{now:%Y:%m:%d-%H:%M:%S}',
         'hash_algorithm': 'HMACSHA256',
         # 'hashExtended': '',
@@ -70,8 +72,9 @@ def main() -> None:
         'checkoutoption': 'combinedpage',
         'currency': str(currency_number),
         'paymentMethod': 'M',
-        'responseSuccessURL': 'https://localhost:8643/webshop/response_success.jsp',
-        'responseFailURL': 'https://localhost:8643/webshop/response_failure.jsp',
+        'responseSuccessURL': 'http://localhost:8000/',
+        'responseFailURL': 'http://localhost:8000/',
+        'comments': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ',
     }
 
     params['hashExtended'] = calculate_hash(params, sharedsecret)
